@@ -17,3 +17,6 @@ notifications:
   email:
     recipients:
       - jjchc@naver.com
+
+before_install:
+  - chmod +x gradlew
