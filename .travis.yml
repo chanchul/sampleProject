@@ -12,6 +12,21 @@ cache:
 
 script: "./gradlew clean build"
 
+before_deploy:
+  - zip -r sampleProject *
+  - mkdir -p deploy
+  - mv sampleProject.zip deploy/sampleProject.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY #travis repo setting
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: chanchul-test-build #S3 bucket
+    skip_clean: true
+    acl: private #zip파일 접근 private
+    local_dir: deploy
+    wait-until-deploy: true
+
 #CI 실행 완료 시 메일로 알람
 notifications:
   email:
@@ -20,3 +35,4 @@ notifications:
 
 before_install:
   - chmod +x gradlew
+
